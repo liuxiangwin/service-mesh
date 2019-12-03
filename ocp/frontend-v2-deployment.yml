@@ -1,24 +1,27 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: backend-v2
+  name: frontend-v2
   labels:
-    app: backend
+    app: frontend
     version: 2.0.0
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        app: backend
+        app: frontend
         version: 2.0.0
       annotations:
         sidecar.istio.io/inject: "true"
     spec:
       containers:
-      - name: backend
-        image: quay.io/voravitl/backend-js:2.0.0
+      - name: frontend
+        image: quay.io/voravitl/frontend-js:2.0.0
         imagePullPolicy: Always
+        env:
+          - name: BACKEND_URL
+            value: http://backend:8080
         resources:
           requests:
             cpu: "0.1"
@@ -26,8 +29,5 @@ spec:
           limits:
             cpu: "0.2"
             memory: 100Mi
-        env:
-          - name: BACKEND_URL
-            value: https://httpbin.org/delay/5
         ports:
         - containerPort: 8080

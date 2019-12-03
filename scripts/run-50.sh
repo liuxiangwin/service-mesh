@@ -6,9 +6,11 @@ VERSION2=0
 while [ $COUNT -lt $MAX ];
 do
   OUTPUT=$(curl $FRONTEND_URL -s -w "Elapsed Time:%{time_total}")
+  HOST=$(echo $OUTPUT|awk -F'Host:' '{print $2}'| awk -F',' '{print $1}')
   VERSION=$(echo $OUTPUT|awk -F'Backend version:' '{print $2}'| awk -F',' '{print $1}')
+  RESPONSE=$(echo $OUTPUT|awk -F',' '{print $2}' | awk -F':' '{print $2}')
   TIME=$(echo $OUTPUT| awk -F"Elapsed Time:" '{print $2}'|awk -F'#' '{print $1}')
-  echo "Backend:$VERSION Elapsed Time:$TIME sec"
+  echo "Backend:$VERSION, Response Code:$RESPONSE, Host:$HOST, Elapsed Time:$TIME sec"
   COUNT=$(expr $COUNT + 1)
   if [ $VERSION == "1.0.0" ];
   then

@@ -5,10 +5,6 @@ metadata:
   threeScale:
     enabled: false
 spec:
-  # NOTE, if you remove all children from an element, you should remove the
-  # element too.  An empty element is interpreted as null and will override all
-  # default values (i.e. no values will be specified for that element, not even
-  # the defaults baked into the chart values.yaml).
   istio:
     global:
       proxy:
@@ -20,10 +16,10 @@ spec:
             cpu: 500m
             memory: 128Mi
       mtls:
-        enabled: true
+        enabled: false
       disablePolicyChecks: false
       policyCheckFailOpen: true
-      #multitenant: false
+      multitenant: true
 
     gateways:
       istio-egressgateway:
@@ -66,20 +62,12 @@ spec:
       traceSampling: 100.0
 
     kiali:
-      # change to false to disable kiali
       enabled: true
-      #hub: kiali/
-      #tag: v01.0.0
-      # create a secret for accessing kiali dashboard with the following credentials
-      #dashboard:
-      #  user: admin
-      #  passphrase: r3dh4t1!
 
     tracing:
       # change to false to disable tracing (i.e. jaeger)
       enabled: true
       jaeger:
-      #  tag: 1.13.1
         # simple, all-in-one strategy
         template: all-in-one
         # production strategy, utilizing elasticsearch
