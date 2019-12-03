@@ -26,7 +26,8 @@ Login to OpenShift Web Console using Adimin user
 * The Subscription Overview page displays the Elasticsearch Operator’s installation progress. Following screen show Elasticsearch oprator installed.
      ![ElasticSearch Operator Inatalled](../images/complete-elastic-operator.png)
 * Repeat all steps for Jaeger, Kiali and OpenShift Service Mesh
-
+* Following screen show all 4 operators are installed.
+     ![Operators Installed](../images/installed-operators.png)
 ## Service Mesh Control Plane
 Now that the Service Mesh Operator has been installed, you can now install a Service Mesh control plane.
 The previously installed Service Mesh operator watches for a ServiceMeshControlPlane resource in all namespaces. Based on the configurations defined in that ServiceMeshControlPlane, the operator creates the Service Mesh control plane.
@@ -50,21 +51,7 @@ In this section of the lab, you define a ServiceMeshControlPlane and apply it to
   
   The entire installation process can take approximately 10-15 minutes. Confirm that following pods are up and running
   
-  ```
-  1: NAME                                      READY   STATUS    RESTARTS   AGE
-    2: grafana-86dc5978b8-m7wqf                  1/1     Running   0          80s
-    3: istio-citadel-6656fc5b9b-dc8dr            1/1     Running   0          6m38s
-    4: istio-egressgateway-66c8cdd978-qgkmr      1/1     Running   0          2m42s
-    5: istio-galley-69d8bbb7c5-fx84w             1/1     Running   0          6m16s
-    6: istio-ingressgateway-844848f59f-gklxr     1/1     Running   0          2m42s
-    7: istio-pilot-798976867d-hc9mr              2/2     Running   0          3m44s
-    8: istio-policy-54556f8b9c-drn66             2/2     Running   3          4m52s
-    9: istio-sidecar-injector-694c49c4b7-8r28t   1/1     Running   0          111s
-   10: istio-telemetry-8949d7ffd-95kzt           2/2     Running   3          4m52s
-   11: jaeger-65f55f7bc6-7mcdx                   1/1     Running   0          8m17s
-   12: kiali-d566b556c-l77lf                     1/1     Running   0          57s
-   13: prometheus-5cb5d7549b-nvxv5               1/1     Running   0          9m42s
-  ```
+  ![watch istio pods](../images/watch-oc-get-pods-istio-system.png)
 
 ## Service Mesh Member Roll
 The Service Mesh operator has installed a control plane configured for multitenancy. This installation reduces the scope of the control plane to only those projects/namespaces listed in a ServiceMeshMemberRoll.
