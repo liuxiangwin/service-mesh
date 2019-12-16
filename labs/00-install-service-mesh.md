@@ -35,7 +35,7 @@ The previously installed Service Mesh operator watches for a ServiceMeshControlP
 In this section of the lab, you define a ServiceMeshControlPlane and apply it to the istio-system namespace.
 
 * Create a namespace called istio-system where the Service Mesh control plane will be installed.
-* Install Control Plane using the custom resource file [basic install|small](../install/basic-install.yml)
+* Install Control Plane using the custom resource file [basic install](../install/basic-install.yml)
     Mutual TLS is disbled by setting mtls to false.
     Kiali user is single sign-on with OpenShift
 * Create the service mesh control plane in the istio-system project
@@ -58,7 +58,7 @@ The Service Mesh operator has installed a control plane configured for multitena
 
 In this section of the lab, you create a ServiceMeshMemberRoll resource with the project/namespaces you wish to be part of the mesh. This ServiceMeshMemberRoll is required to be named default and exist in the same namespace where the ServiceMeshControlPlane resource resides (ie: istio-system).
 
-Sample Service Mesh Member Roll [Member Roll|small](../install/memberroll.yml) for project name "user1" and "user2"
+Sample Service Mesh Member Roll [Member Roll](../install/memberroll.yml) for project name "user1" and "user2"
 ```
 apiVersion: maistra.io/v1
 kind: ServiceMeshMemberRoll
