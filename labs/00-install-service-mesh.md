@@ -18,7 +18,7 @@ Installing the OpenShift Service Mesh involves :
 Login to OpenShift Web Console using Adimin user
 * In the OCP Web Console, navigate to: Catalog -> Operator Hub
 * In the OperatorHub catalog of your OCP Web Console, type Elasticsearch into the filter box to locate the Elasticsearch Operator (by Red Hat)
-     ![ElasticSearch Operator](../images/elastic-operator.png =50x)
+     ![ElasticSearch Operator|small](../images/elastic-operator.png)
 * Click the Elasticsearch Operator to display information about the Operator and Click Install
      ![Install ElasticSearch Operator|small](../images/install-elastic-operator.png)
 * On the Create Operator Subscription page. Select All namespaces on the cluster (default). This installs the Operator in the default openshift-operators project and makes the Operator available to all projects in the cluster and Click Subscribe
