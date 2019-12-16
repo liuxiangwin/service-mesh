@@ -9,12 +9,6 @@ Table of Content
  * [Dynamic Routing](labs/03-dynamic-routing.md)
  * [Istio Gateway](labs/04-ingress.md)
 
-## Introduction
-
-WIP - Link to PPT PDF
-
-
-
 ## Authors
 
 * **Voravit** 
