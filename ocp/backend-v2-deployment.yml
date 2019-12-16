@@ -29,5 +29,6 @@ spec:
         env:
           - name: BACKEND_URL
             value: https://httpbin.org/delay/5
+            #value: https://httpbin.org/status/503
         ports:
         - containerPort: 8080

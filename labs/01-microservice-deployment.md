@@ -2,37 +2,10 @@
 Deploy microservices applications to OpenShift Container Platform 
 Observe automatic injection of Service Mesh sidecar into each microservice
 
-## Setup
 There are two microservices in this lab that you will deploy to OpenShift. In a later lab of this course, you will manage the interactions between these microservices using Red Hat OpenShift Service Mesh.
 
-Here is the application architecture of the microservices:
+<!-- ## Setup
 
-image here!
-
-Setup environment variables
-```
-export USERID=<your user ID>
-export PROJECT=$USERID
-
-```
-
-Login to OpenShift with oc command by
-```
-oc login --username=$USERID --server=<URL to OpenShift>
-
-```
-
-Clone project to your working directory
-```
-git clone <My URL>
-
-```
-
-Create project for frontend and backend application
-```
-oc new-project $USERID
-
-```
 
 Istio need priviledged acess to run 
 *** internal use: need to add RBAC for userXX to have rights to run following command
@@ -40,12 +13,12 @@ Istio need priviledged acess to run
 oc adm policy add-scc-to-user anyuid -z default -n $USERID
 oc adm policy add-scc-to-user privileged  -z default -n $USERID
 
-```
+``` -->
 
 ## Deploy Frontend and Backend app
 You start by deploying the catalog service to RHOCP. The sidecar proxy is automatically injected by annotated deployment with 
 
-*** Internal: need to add project to Service Mesh Member Roll first
+
 ```
 sidecar.istio.io/inject: "true"
 
@@ -116,6 +89,8 @@ route.route.openshift.io/frontend created
 
 Monitor the deployment of the pods:
 ```
+watch oc get pods -n $USERID
+or
 oc get pods -w -n $USERID
 
 ```
@@ -158,4 +133,10 @@ You also can use following cURL for check response time
 ```
 curl $FRONTEND_URL -s -w "\nElapsed Time:%{time_total}"
 
+```
+
+Sample output
+```
+Frontend version: 1.0.0 => [Backend: http://backend:8080, Response: 200, Body: Backend version:2.0.0,Response:200,Host:backend-v2-74f77cd869-jkb52, Message: Hello World!!]
+Elapsed Time:6.132507
 ```

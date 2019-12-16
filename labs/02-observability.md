@@ -15,7 +15,7 @@ Kiali runs as a service together with Istio, and does not require any changes to
 Get the URL of the Kiali web console and set as an environment variable:
 
 ```
-export KIALI_URL=https://$(oc get route kiali -n istio-system -o template --template='{{.spec.host}}')
+export KIALI_URL=https://$(oc get route kiali -n $USERID-istio-system -o template --template='{{.spec.host}}')
 # Display the KIALI_URL URL:
 echo $KIALI_URL
 ```
@@ -23,10 +23,10 @@ echo $KIALI_URL
 Kiali Login screen
 ![Kiali Login](../images/kiali-login.png)
 
-## Generate Sample Data
+## Using Kiali
 
 
-## View Service Graph
+### View Service Graph
 
 Move back to the Kiali web console. In the main console select your project. Then in the left-hand panel, Click Graph.
 ![Kiali Main Screen](../images/kiali-main-screen.png)
@@ -47,7 +47,7 @@ Expect to see traffic animation on the graph based on traffic that is generated 
 
 Remark that on the right of the screen show the result of requests (OK, 3xx, 4xx, 5xx)
 
-# Explore Service Listing
+### Explore Service 
 In the left-hand panel, click Services.
 
 On the Services page you can view a listing of the services that are running in the cluster, and additional information about them such as health status.
@@ -56,12 +56,30 @@ On the Services page you can view a listing of the services that are running in 
 
 Remark: There is "Istio Config" in the left-hand panel. This can use for display and configure Istio policy. You can check this out in later labs
 
-# Distributed Tracing
+### Exploring Workload
+In the left-hand panel, click Workloads. Then select workload you want to check for statistic. (eg: frontend)
+
+![Workload List](../images/workload-list.png)
+
+Default page show overview information of selected workload.
+
+![Workload Frontend](../images/workload-frontend-v1.png)
+
+View log of each Pod by select tab Logs
+
+![Workload Log](../images/workload-logs.png)
+
+View Inbound/Outbound metrics by select Inbound and Outbound tab.
+
+![Workload Inbound](../images/workload-inbound-metrics.png)
+
+
+## Distributed Tracing
 
 Jaeger implement OpenTracing for tracing microservices. Sampling rate and data store of Jaeger Get the URL of the Jaeger Web console and set as an environment variable:
 
 ```
-export JAEGER_URL=https://$(oc get route jaeger -n istio-system -o template --template='{{.spec.host}}')
+export JAEGER_URL=https://$(oc get route jaeger -n $USERID-istio-system -o template --template='{{.spec.host}}')
 # Display the JAEGER_URL URL:
 echo $JAEGER_URL
 ```

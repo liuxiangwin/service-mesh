@@ -103,57 +103,7 @@ Version 2.0.0: 7
 ========================================================
 ```
 You can also check this splitting traffic with Kiali console.
-... kiali screen ...
-
-
-<!-- ## Traffic splitting by HTTP header
-### Virtual Service
-Review the following Istio's  virtual service configuration file (...) to route 80% of traffic to version 1.0.0 and 20% of traffic to version 2.0.0
-```
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
-metadata:
-  name: backend-virtual-service
-spec:
-  hosts:
-  - backend
-  http:
-  - match:
-    - headers:
-        baggage-user-agent:
-          regex: .*Firefox.*
-    route:
-    - destination:
-        host: backend
-        subset: v1
-  - route:
-    - destination:
-        host: backend
-        subset: v2
-```
-
-### Apply Istio Policy for A/B deployment
-Run oc apply command to apply Istio policy.
-
-```
-oc apply -f istio-files/a-b-destination-rules.yml -n $USERID
-oc apply -f istio-files/virtual-service-firefox-backend-v1.yml -n $USERID
-
-```
-
-Sample outout
-```
-destinationrule.networking.istio.io/backend created
-virtualservice.networking.istio.io/backend-virtual-service created
-
-```
-### Test
-Test cURL with User-Agent is set to Firefox
-```
-curl -H "User-Agent:Firefox" $FRONTEND_URL
-
-``` -->
-
+![Kiali Graph 80-20](../images/kiali-graph-80-20.png)
 
 ## Timeout
 Let's say that 6 sec respond time of backend v2 is too long. If frontend wait more than 3 sec, frontend will receive HTTP code 504
@@ -206,10 +156,25 @@ Result
 Frontend version: 1.0.0 => [Backend: http://backend:8080, Response: 504, Body: upstream request timeout]
 ```
 
-Run [run-50.sh](../scripts/run-50.sh) and check Kiali console
-.... Kiali ...
+Run [run-50.shj](../scripts/run-50.sh)
+```
+scripts/run-50.sh
+```
 
-### Remove Istio Policy
+Sample output
+```
+Backend:, Response Code: 504, Host:, Elapsed Time:3.878352 sec
+Backend:1.0.0, Response Code: 200, Host:backend-v1-84b98cf86c-hjf65, Elapsed Time:1.558571 sec
+Backend:, Response Code: 504, Host:, Elapsed Time:3.556231 sec
+Backend:1.0.0, Response Code: 200, Host:backend-v1-84b98cf86c-hjf65, Elapsed Time:1.681229 sec
+Backend:1.0.0, Response Code: 200, Host:backend-v1-84b98cf86c-hjf65, Elapsed Time:1.573688 sec
+Backend:, Response Code: 504, Host:, Elapsed Time:4.295051 sec
+```
+
+Check Graph in Kiali Console with Response time.
+![](../images/kiali-graph-timeout.png)
+
+## Remove Istio Policy
 Run oc delete command to remove Istio policy.
 
 ```
@@ -217,3 +182,53 @@ oc delete -f istio-files/virtual-service-backend-v1-v2-80-20.yml -n $USERID
 oc delete -f istio-files/destination-rule-backend-v1-v2.yml -n $USERID
 
 ```
+
+<!-- ## Traffic splitting by HTTP header
+### Virtual Service
+Review the following Istio's  virtual service configuration file (...) to route 80% of traffic to version 1.0.0 and 20% of traffic to version 2.0.0
+```
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: backend-virtual-service
+spec:
+  hosts:
+  - backend
+  http:
+  - match:
+    - headers:
+        baggage-user-agent:
+          regex: .*Firefox.*
+    route:
+    - destination:
+        host: backend
+        subset: v1
+  - route:
+    - destination:
+        host: backend
+        subset: v2
+```
+
+### Apply Istio Policy for A/B deployment
+Run oc apply command to apply Istio policy.
+
+```
+oc apply -f istio-files/a-b-destination-rules.yml -n $USERID
+oc apply -f istio-files/virtual-service-firefox-backend-v1.yml -n $USERID
+
+```
+
+Sample outout
+```
+destinationrule.networking.istio.io/backend created
+virtualservice.networking.istio.io/backend-virtual-service created
+
+```
+### Test
+Test cURL with User-Agent is set to Firefox
+```
+curl -H "User-Agent:Firefox" $FRONTEND_URL
+
+``` -->
+
+<!-- export GATEWAY_URL=$(oc -n $USERID-istio-system get route istio-ingressgateway -o jsonpath='{.spec.host}') -->
