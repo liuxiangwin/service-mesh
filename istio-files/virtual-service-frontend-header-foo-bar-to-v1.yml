@@ -6,7 +6,7 @@ spec:
   hosts:
   - '*'
   gateways:
-  - ingress-gateway
+  - frontend-gateway
   http:
   - match:
     - headers:

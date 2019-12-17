@@ -14,9 +14,11 @@ VirtualService defines a set of traffic routing rules to apply when a host is ad
 
 DestinationRule defines policies that apply to traffic intended for a service after routing has occurred. These rules specify configuration for load balancing, connection pool size from the sidecar, and outlier detection settings to detect and evict unhealthy hosts from the load-balancing pool.
 
-## Traffic splitting by percentage
+## Traffic splitting by Percentage
 ### Destination Rule
 Review the following Istio's destination rule configuration file [destination-rule-backend-v1-v2.yml](../istio-files/destination-rule-backend-v1-v2.yml)  to define subset called v1 and v2 by matching label "app" and "version"
+
+**Remark: If you don't like to edit YAML file, You can try using [Kiali Console to create Istio policy](#routing-policy-with-kiali-console)**
 
 ```
 apiVersion: networking.istio.io/v1alpha3
@@ -79,6 +81,29 @@ destinationrule.networking.istio.io/backend created
 virtualservice.networking.istio.io/backend-virtual-service created
 
 ```
+### Routing Policy with Kiali Console 
+Login to the Kiali web console. Select "Services" on the left menu. Then select backend service
+
+On the main screen of backend service. Click Action menu on the top right and select "Create Weighted Routing"
+
+![Create Weighted Routing](../images/service-backend-create-weighted-routing.png)
+
+Use slider bar or input weight 
+![Set Weight](../images/service-backend-set-weight-by-kiali.png)
+
+Click "Show Advanced Options" to explore more options
+![Show Advanced Options](../images/service-backend-set-weight-advanced-by-kiali.png)
+
+Click Create to create Destination Rule and Virtual Service. Then view result by select Virtual Service and Destination Rule on the bottom section of page.
+
+Example of Virtual Service configuration
+![Kiali Istio Config Virtual Service](../images/kiali-service-backend-virtual-service.png)
+
+Example of Destination Rule configuration
+![Kiali Istio Config Destination Rule](../images/kiali-service-backend-destination-rule.png)
+
+Remark: You can view YAML by click "YAML" tab
+
 
 ### Test
 Test A/B deployment by run [run-50.sh](../scripts/run-50.sh)
@@ -106,13 +131,13 @@ Version v1: 39
 Version v2: 11
 ========================================================
 ```
-You can also check this splitting traffic with Kiali console.
+You can also check this splitting traffic with Kiali console by select Graph on left menu.
 ![Kiali Graph 80-20](../images/kiali-graph-80-20.png)
 
 ## Timeout
-Let's say that 6 sec respond time of backend v2 is too long. If frontend wait more than 3 sec, frontend will receive HTTP code 504
+We can also add timeout to Virtual Service configuration. Currently backend v2 is response in 6 sec. We will set Virtual Service to wait for 3 sec. If frontend wait more than 3 sec, frontend will received HTTP response with Gateway Timeout (504).
 
-Review the following Istio's  virtual service configuration file [virtual-service-backend-v1-v2-50-50-3s-timeout.yml](../istio-files/virtual-service-backend-v1-v2-50-50-3s-timeout.yml) to set timeout to 6 sec
+Review the following Istio's  virtual service configuration file [virtual-service-backend-v1-v2-50-50-3s-timeout.yml](../istio-files/virtual-service-backend-v1-v2-50-50-3s-timeout.yml) to set timeout to 3 sec
 
 ```
 apiVersion: networking.istio.io/v1alpha3
@@ -161,6 +186,7 @@ Frontend version: v1 => [Backend: http://backend:8080, Response: 504, Body: upst
 ```
 
 Run [run-50.shj](../scripts/run-50.sh)
+
 ```
 scripts/run-50.sh
 ```
@@ -194,52 +220,5 @@ oc delete -f istio-files/destination-rule-backend-v1-v2.yml -n $USERID
 
 ```
 
-<!-- ## Traffic splitting by HTTP header
-### Virtual Service
-Review the following Istio's  virtual service configuration file (...) to route 80% of traffic to version 1.0.0 and 20% of traffic to version 2.0.0
-```
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
-metadata:
-  name: backend-virtual-service
-spec:
-  hosts:
-  - backend
-  http:
-  - match:
-    - headers:
-        baggage-user-agent:
-          regex: .*Firefox.*
-    route:
-    - destination:
-        host: backend
-        subset: v1
-  - route:
-    - destination:
-        host: backend
-        subset: v2
-```
-
-### Apply Istio Policy for A/B deployment
-Run oc apply command to apply Istio policy.
-
-```
-oc apply -f istio-files/a-b-destination-rules.yml -n $USERID
-oc apply -f istio-files/virtual-service-firefox-backend-v1.yml -n $USERID
-
-```
-
-Sample outout
-```
-destinationrule.networking.istio.io/backend created
-virtualservice.networking.istio.io/backend-virtual-service created
-
-```
-### Test
-Test cURL with User-Agent is set to Firefox
-```
-curl -H "User-Agent:Firefox" $FRONTEND_URL
-
-``` -->
-
-<!-- export GATEWAY_URL=$(oc -n $USERID-istio-system get route istio-ingressgateway -o jsonpath='{.spec.host}') -->
+You can also remove Istio policy by using Kiali Console by select Istio Config menu on the left then select each configuration and select menu Action on the upper right of page. Then click Delete
+![](../images/kiali-delete-policy.png)
