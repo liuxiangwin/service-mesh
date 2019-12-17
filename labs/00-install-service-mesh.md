@@ -43,20 +43,20 @@ image here!
 
 Setup environment variables
 ```
-export USERID=<your user ID>
-export PROJECT=$USERID
+export USERID=<your user ID> # or Use set USERID=<your user ID> for Windows CMD
+
 
 ```
 
 Login to OpenShift with oc command by
 ```
-oc login --username=$USERID --server=<URL to OpenShift>
+oc login --username=$USERID --server=<URL to OpenShift> # or using %USERID% instead of $USERID for Windows CMD
 
 ```
 
 Create project (namespace) for frontend and backend application
 ```
-oc new-project $USERID
+oc new-project $USERID # or using %USERID% instead of $USERID for Windows CMD
 
 ```
 
