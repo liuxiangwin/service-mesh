@@ -19,7 +19,7 @@ oc adm policy add-scc-to-user privileged  -z default -n $USERID
 ``` -->
 
 ## Deploy Frontend and Backend app
-You start by deploying the catalog service to RHOCP. The sidecar proxy is automatically injected by annotated deployment with 
+You start by deploying the catalog service to OpenShift. The sidecar proxy is automatically injected by annotated deployment with 
 
 
 ```
