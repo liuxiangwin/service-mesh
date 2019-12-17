@@ -257,6 +257,9 @@ Using Kiali Web Console to view pod's log by select Workloads on left menu then 
 ![](../images/kiali-view-pod-log.png)
 
 Run cURL to test that every request is sent to backend-v3 by checking log of backend-v3
+```
+curl $FRONTEND_URL
+```
 
 Sample output
 ```

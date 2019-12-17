@@ -4,6 +4,7 @@ Observe automatic injection of Service Mesh sidecar into each microservice
 
 There are two microservices in this lab that you will deploy to OpenShift. In a later lab of this course, you will manage the interactions between these microservices using Red Hat OpenShift Service Mesh.
 
+![Microservice Diagram](../images/microservices-initial.svg)
 <!-- ## Setup
 
 
@@ -12,6 +13,8 @@ Istio need priviledged acess to run
 ```
 oc adm policy add-scc-to-user anyuid -z default -n $USERID
 oc adm policy add-scc-to-user privileged  -z default -n $USERID
+
+
 
 ``` -->
 
