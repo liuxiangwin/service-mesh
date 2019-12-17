@@ -31,10 +31,10 @@ Kiali Login screen
 Move back to the Kiali web console. In the main console select your project. Then in the left-hand panel, Click Graph.
 ![Kiali Main Screen](../images/kiali-main-screen.png)
 
-On the Graph screen, Select version graph and enable animation
+On the Graph screen, Select version graph and enable animation and set to display Requests Precentage
 ![Kiali set graph](../images/kiali-show-animation.png)
 
-To show the capabilities of Kiali, you need to generate some sample data. For this, you can use the microservices application that you deployed earlier.
+To show the capabilities of Kiali Graph, you need to generate some sample data. For this, you can use the microservices application that you deployed earlier.
 
 Run following command on your terminal
 ```
@@ -46,6 +46,10 @@ Expect to see traffic animation on the graph based on traffic that is generated 
 ![Kiali Graph](../images/kiali-graph.png)
 
 Remark that on the right of the screen show the result of requests (OK, 3xx, 4xx, 5xx)
+
+Set Kiali Graph to show Response Time
+
+![](../images/kiali-graph-response-time.png)
 
 ### Explore Service 
 In the left-hand panel, click Services.

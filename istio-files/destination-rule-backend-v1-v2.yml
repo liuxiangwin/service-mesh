@@ -8,14 +8,14 @@ spec:
   - name: v1
     labels:
       app: backend
-      version: 1.0.0
+      version: v1
     trafficPolicy:
       loadBalancer:
         simple: ROUND_ROBIN
   - name: v2
     labels:
       app: backend
-      version: 2.0.0
+      version: v2
     trafficPolicy:
       loadBalancer:
         simple: ROUND_ROBIN

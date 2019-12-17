@@ -2,22 +2,22 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: frontend-v2
-  labels:
-    app: frontend
-    version: 2.0.0
+  # labels:
+  #   app: frontend
+  #   version: v2
 spec:
   replicas: 1
   template:
     metadata:
       labels:
         app: frontend
-        version: 2.0.0
+        version: v2
       annotations:
         sidecar.istio.io/inject: "true"
     spec:
       containers:
       - name: frontend
-        image: quay.io/voravitl/frontend-js:2.0.0
+        image: quay.io/voravitl/frontend-js:v2
         imagePullPolicy: Always
         env:
           - name: BACKEND_URL

@@ -7,7 +7,7 @@ spec:
   subsets:
   - labels:
       app: backend
-      version: 1.0.0
+      version: v1
     name: v1
     trafficPolicy:
       connectionPool:
@@ -22,7 +22,7 @@ spec:
         maxEjectionPercent: 100
   - labels:
       app: backend
-      version: 2.0.0
+      version: v2
     name: v2
     trafficPolicy:
       connectionPool:

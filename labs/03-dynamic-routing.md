@@ -29,20 +29,20 @@ spec:
   - name: v1
     labels:
       app: backend
-      version: 1.0.0
+      version: v1
     trafficPolicy:
       loadBalancer:
         simple: ROUND_ROBIN
   - name: v2
     labels:
       app: backend
-      version: 2.0.0
+      version: v2
     trafficPolicy:
       loadBalancer:
         simple: ROUND_ROBIN
 ```
 ### Virtual Service
-Review the following Istio's  virtual service configuration file [virtual-service-backend-v1-v2-80-20.yml](../istio-files/virtual-service-backend-v1-v2-80-20.yml) to route 80% of traffic to version 1.0.0 and 20% of traffic to version 2.0.0
+Review the following Istio's  virtual service configuration file [virtual-service-backend-v1-v2-80-20.yml](../istio-files/virtual-service-backend-v1-v2-80-20.yml) to route 80% of traffic to version v1 and 20% of traffic to version v2
 
 ```
 apiVersion: networking.istio.io/v1alpha3
@@ -91,15 +91,19 @@ Sample output
 
 ```
 ...
-Backend:2.0.0 Elapsed Time:5.873382 sec
-Backend:1.0.0 Elapsed Time:0.868324 sec
-Backend:1.0.0 Elapsed Time:0.813940 sec
-Backend:1.0.0 Elapsed Time:0.793226 sec
-Backend:1.0.0 Elapsed Time:0.849677 sec
+Backend:v1, Response Code: 200, Host:backend-v1-6ddf9c7dcf-pppzc, Elapsed Time:0.890935 sec
+Backend:v1, Response Code: 200, Host:backend-v1-6ddf9c7dcf-pppzc, Elapsed Time:1.084210 sec
+Backend:v1, Response Code: 200, Host:backend-v1-6ddf9c7dcf-pppzc, Elapsed Time:0.952610 sec
+Backend:v2, Response Code: 200, Host:backend-v2-7655885b8c-5spv4, Elapsed Time:5.823382 sec
+Backend:v2, Response Code: 200, Host:backend-v2-7655885b8c-5spv4, Elapsed Time:5.805121 sec
+Backend:v1, Response Code: 200, Host:backend-v1-6ddf9c7dcf-pppzc, Elapsed Time:0.778479 sec
+Backend:v1, Response Code: 200, Host:backend-v1-6ddf9c7dcf-pppzc, Elapsed Time:0.856198 sec
+Backend:v2, Response Code: 200, Host:backend-v2-7655885b8c-5spv4, Elapsed Time:5.993813 sec
+Backend:v1, Response Code: 200, Host:backend-v1-6ddf9c7dcf-pppzc, Elapsed Time:0.787655 sec
 ========================================================
 Total Request: 50
-Version 1.0.0: 43
-Version 2.0.0: 7
+Version v1: 39
+Version v2: 11
 ========================================================
 ```
 You can also check this splitting traffic with Kiali console.
@@ -146,14 +150,14 @@ virtualservice.networking.istio.io/backend-virtual-service created
 
 ```
 
-Test again with cURL and check for 504 response code from backend version 2.0.0
+Test again with cURL and check for 504 response code from backend version v2
 ```
 curl $FRONTEND_URL
 ```
 
 Result
 ```
-Frontend version: 1.0.0 => [Backend: http://backend:8080, Response: 504, Body: upstream request timeout]
+Frontend version: v1 => [Backend: http://backend:8080, Response: 504, Body: upstream request timeout]
 ```
 
 Run [run-50.shj](../scripts/run-50.sh)
@@ -163,12 +167,19 @@ scripts/run-50.sh
 
 Sample output
 ```
-Backend:, Response Code: 504, Host:, Elapsed Time:3.878352 sec
-Backend:1.0.0, Response Code: 200, Host:backend-v1-84b98cf86c-hjf65, Elapsed Time:1.558571 sec
-Backend:, Response Code: 504, Host:, Elapsed Time:3.556231 sec
-Backend:1.0.0, Response Code: 200, Host:backend-v1-84b98cf86c-hjf65, Elapsed Time:1.681229 sec
-Backend:1.0.0, Response Code: 200, Host:backend-v1-84b98cf86c-hjf65, Elapsed Time:1.573688 sec
-Backend:, Response Code: 504, Host:, Elapsed Time:4.295051 sec
+...
+Backend:v1, Response Code: 200, Host:backend-v1-6ddf9c7dcf-pppzc, Elapsed Time:0.774024 sec
+Backend:, Response Code: 504, Host:, Elapsed Time:3.193873 sec
+Backend:v1, Response Code: 200, Host:backend-v1-6ddf9c7dcf-pppzc, Elapsed Time:0.787584 sec
+Backend:, Response Code: 504, Host:, Elapsed Time:3.724406 sec
+Backend:, Response Code: 504, Host:, Elapsed Time:3.147017 sec
+Backend:, Response Code: 504, Host:, Elapsed Time:3.207459 sec
+========================================================
+Total Request: 50
+Version v1: 25
+Version v2: 0
+========================================================
+...
 ```
 
 Check Graph in Kiali Console with Response time.

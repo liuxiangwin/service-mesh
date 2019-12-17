@@ -15,19 +15,19 @@ do
   echo "Backend:$VERSION, Response Code:$RESPONSE, Host:$HOST, Elapsed Time:$TIME sec"
   COUNT=$(expr $COUNT + 1)
   if [$RESPONSE -eq 200 ];
-  then
-   if [ $VERSION == "1.0.0" ];
    then
-      VERSION1=$(expr $VERSION1 + 1)
+      if [ $VERSION == "v1" ];
+       then
+         VERSION1=$(expr $VERSION1 + 1)
+       fi
+      if [ $VERSION == "v2" ];
+       then
+         VERSION2=$(expr $VERSION2 + 1)
+       fi
    fi
-   if [ $VERSION == "2.0.0" ];
-   then
-      VERSION2=$(expr $VERSION2 + 1)
-   fi
-  fi
 done
 echo "========================================================"
 echo "Total Request: $MAX"
-echo "Version 1.0.0: $VERSION1"
-echo "Version 2.0.0: $VERSION2"
+echo "Version v1: $VERSION1"
+echo "Version v2: $VERSION2"
 echo "========================================================"
