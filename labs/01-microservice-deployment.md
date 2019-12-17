@@ -4,7 +4,7 @@ Observe automatic injection of Service Mesh sidecar into each microservice
 
 There are two microservices in this lab that you will deploy to OpenShift. In a later lab of this course, you will manage the interactions between these microservices using Red Hat OpenShift Service Mesh.
 
-![Microservice Diagram](../images/microservices-initial.svg)
+![Microservice Diagram](../images/microservices-initial.png)
 <!-- ## Setup
 
 
