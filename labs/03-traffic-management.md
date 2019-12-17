@@ -13,6 +13,8 @@ VirtualService defines a set of traffic routing rules to apply when a host is ad
 DestinationRule defines policies that apply to traffic intended for a service after routing has occurred. These rules specify configuration for load balancing, connection pool size from the sidecar, and outlier detection settings to detect and evict unhealthy hosts from the load-balancing pool.
 
 ## Traffic splitting by Percentage
+![Backend v1 v2 80% 20%](../images/microservices-with-v1-v2-80-20.png)
+
 ### Destination Rule
 Review the following Istio's destination rule configuration file [destination-rule-backend-v1-v2.yml](../istio-files/destination-rule-backend-v1-v2.yml)  to define subset called v1 and v2 by matching label "app" and "version"
 
@@ -132,8 +134,76 @@ Version v2: 11
 You can also check this splitting traffic with Kiali console by select Graph on left menu.
 ![Kiali Graph 80-20](../images/kiali-graph-80-20.png)
 
+## Mirroring
+Mirror all request to backend to backend-v3
+![Mirror](../images/microservices-mirror.png)
+
+Run following command to create backend-v3
+```
+oc apply -f ocp/backend-v3-deployment.yml -n $USERID
+oc apply -f ocp/backend-v3-service.yml -n $USERID
+```
+**Remark: backend v3 create with app label backend-v3 and servive name backend-v3 then backend v3 is not included in backend service**
+
+Review the following Istio's  virtual service configuration file [virtual-service-backend-v1-v2-mirror-to-v3.yml](../istio-files/virtual-service-backend-v1-v2-mirror-to-v3.yml) to mirror request to backend-v3
+
+```
+...
+  - route:
+    - destination:
+        host: backend
+        subset: v1
+      weight: 80
+    - destination:
+        host: backend
+        subset: v2
+      weight: 20
+    mirror:
+      host: backend-v3
+```
+
+Run oc apply command to apply Istio policy.
+
+```
+oc apply -f istio-files/virtual-service-backend-v1-v2-mirror-to-v3.yml -n $USERID
+
+```
+
+Sample outout
+```
+virtualservice.networking.istio.io/backend-virtual-service configured
+
+```
+
+Open anoter terminal to view backend-v3 log
+```
+# Use oc get pods to get pod name. Replace pod name in following commamnd
+oc tail -f <backend-v3 pod> -c -n $USERID
+```
+
+Using Kiali Web Console to view pod's log by select Workloads on left menu then select log
+![](../images/kiali-view-pod-log.png)
+
+Run cURL to test that every request is sent to backend-v3 by checking log of backend-v3
+```
+curl $FRONTEND_URL
+```
+
+Sample output
+```
+...
+{"level":30,"time":1576579437616,"pid":1,"hostname":"backend-v3-678fd7cd9f-vj8md","msg":"Check version","v":1}
+{"level":30,"time":1576579437616,"pid":1,"hostname":"backend-v3-678fd7cd9f-vj8md","req":{"id":6,"method":"GET","url":"/version","headers":{"host":"localhost:8080","connection":"close"},"remoteAddress":"127.0.0.1","remotePort":43528},"res":{"statusCode":200,"headers":{"x-powered-by":"Express","content-type":"text/html; charset=utf-8","content-length":"31","etag":"W/\"1f-jASuEXssaRiJl1ZMVT5f+nJ7NlI\""}},"responseTime":0,"msg":"request completed","v":1}
+{"level":30,"time":1576579437617,"pid":1,"hostname":"backend-v3-678fd7cd9f-vj8md","msg":"http://localhost:8080/version return 200","v":1}
+{"level":30,"time":1576579437617,"pid":1,"hostname":"backend-v3-678fd7cd9f-vj8md","req":{"id":5,"method":"GET","url":"/","headers":{"host":"backend-shadow:8080","x-forwarded-proto":"http","x-request-id":"e6c5051e-0b47-97ef-90e5-196a0d0da1e7","x-forwarded-for":"10.131.0.56","content-length":"0","x-envoy-internal":"true","x-b3-traceid":"00b008f6c0c2954447044cbac3f1fa05","x-b3-spanid":"69bec1c43eb7f806","x-b3-parentspanid":"47044cbac3f1fa05","x-b3-sampled":"1"},"remoteAddress":"127.0.0.1","remotePort":43526},"res":{"statusCode":200,"headers":{"x-powered-by":"Express","content-type":"text/html; charset=utf-8","content-length":"88","etag":"W/\"58-TflbsjAn5ISEGQ3TmZIxZcZP+os\""}},"responseTime":2,"msg":"request completed","v":1}
+...
+```
+
+
 ## Timeout
 We can also add timeout to Virtual Service configuration. Currently backend v2 is response in 6 sec. We will set Virtual Service to wait for 3 sec. If frontend wait more than 3 sec, frontend will received HTTP response with Gateway Timeout (504).
+
+![Timeout 3s](../images/microservices-timeout-3s.png)
 
 Review the following Istio's  virtual service configuration file [virtual-service-backend-v1-v2-50-50-3s-timeout.yml](../istio-files/virtual-service-backend-v1-v2-50-50-3s-timeout.yml) to set timeout to 3 sec
 
@@ -208,68 +278,6 @@ Version v2: 0
 
 Check Graph in Kiali Console with Response time.
 ![](../images/kiali-graph-timeout.png)
-
-## Mirroring
-Mirror request to backend v3
-```
-oc apply -f ocp/backend-v3-deployment.yml -n $USERID
-oc apply -f ocp/backend-v3-service.yml -n $USERID
-```
-**Remark: backend v3 create with app label backend-v3 and servive name backend-v3 then backend v3 is not included in backend service**
-
-Review the following Istio's  virtual service configuration file [virtual-service-backend-v1-v2-mirror-to-v3.yml](../istio-files/virtual-service-backend-v1-v2-mirror-to-v3.yml) to mirror request to backend-v3
-
-```
-...
-  - route:
-    - destination:
-        host: backend
-        subset: v1
-      weight: 80
-    - destination:
-        host: backend
-        subset: v2
-      weight: 20
-    mirror:
-      host: backend-v3
-```
-
-Run oc apply command to apply Istio policy.
-
-```
-oc apply -f istio-files/virtual-service-backend-v1-v2-mirror-to-v3.yml -n $USERID
-
-```
-
-Sample outout
-```
-virtualservice.networking.istio.io/backend-virtual-service configured
-
-```
-
-Open anoter terminal to view backend-v3 log
-```
-# Use oc get pods to get pod name. Replace pod name in following commamnd
-oc tail -f <backend-v3 pod> -c -n $USERID
-```
-
-Using Kiali Web Console to view pod's log by select Workloads on left menu then select log
-![](../images/kiali-view-pod-log.png)
-
-Run cURL to test that every request is sent to backend-v3 by checking log of backend-v3
-```
-curl $FRONTEND_URL
-```
-
-Sample output
-```
-...
-{"level":30,"time":1576579437616,"pid":1,"hostname":"backend-v3-678fd7cd9f-vj8md","msg":"Check version","v":1}
-{"level":30,"time":1576579437616,"pid":1,"hostname":"backend-v3-678fd7cd9f-vj8md","req":{"id":6,"method":"GET","url":"/version","headers":{"host":"localhost:8080","connection":"close"},"remoteAddress":"127.0.0.1","remotePort":43528},"res":{"statusCode":200,"headers":{"x-powered-by":"Express","content-type":"text/html; charset=utf-8","content-length":"31","etag":"W/\"1f-jASuEXssaRiJl1ZMVT5f+nJ7NlI\""}},"responseTime":0,"msg":"request completed","v":1}
-{"level":30,"time":1576579437617,"pid":1,"hostname":"backend-v3-678fd7cd9f-vj8md","msg":"http://localhost:8080/version return 200","v":1}
-{"level":30,"time":1576579437617,"pid":1,"hostname":"backend-v3-678fd7cd9f-vj8md","req":{"id":5,"method":"GET","url":"/","headers":{"host":"backend-shadow:8080","x-forwarded-proto":"http","x-request-id":"e6c5051e-0b47-97ef-90e5-196a0d0da1e7","x-forwarded-for":"10.131.0.56","content-length":"0","x-envoy-internal":"true","x-b3-traceid":"00b008f6c0c2954447044cbac3f1fa05","x-b3-spanid":"69bec1c43eb7f806","x-b3-parentspanid":"47044cbac3f1fa05","x-b3-sampled":"1"},"remoteAddress":"127.0.0.1","remotePort":43526},"res":{"statusCode":200,"headers":{"x-powered-by":"Express","content-type":"text/html; charset=utf-8","content-length":"88","etag":"W/\"58-TflbsjAn5ISEGQ3TmZIxZcZP+os\""}},"responseTime":2,"msg":"request completed","v":1}
-...
-```
 
 
 

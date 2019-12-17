@@ -2,6 +2,7 @@
 
 Configure service mesh gateway to control traffic that entering mesh.
 
+![Microservice with Ingress Diagram](../images/microservices-with-ingress.png)
 ## Setup
 Deploy frontend v2 and remove backend v2
 
