@@ -1,8 +1,6 @@
-# Dynamic Routing Lab
+<!-- # Dynamic Routing Lab
 
-Configure service mesh route rules to dynamically route and shape traffic between services
-
-
+Configure service mesh route rules to dynamically route and shape traffic between services -->
 ## Traffic Management
 Routing within Service Mesh can be controlled by using Virtual Service and Routing Rules.
 
