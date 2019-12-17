@@ -16,10 +16,9 @@ Installing the OpenShift Service Mesh involves :
 
 
 ## Install Operators
-```
-Remark: Instructor already install all operators for you.
 
-```
+**Remark: Instructor already installed all operators for you. This is per cluster activities.**
+
 
 Login to OpenShift Web Console using Adimin user
 * In the OCP Web Console, navigate to: Catalog -> Operator Hub
@@ -66,9 +65,14 @@ Create Project (namespace) by Web Console, select new project from top-left menu
 
 Clone project to your working directory
 ```
-git clone <My URL>
+git clone https://gitlab.com/workshop6/service-mesh.git
 
 ```
+If you don't have git, click this [Service Mesh Workshop](https://gitlab.com/workshop6/service-mesh)
+
+Download by click following icon.
+![Dowload from Git](../images/download-from-git.png)
+
 
 ## Service Mesh Control Plane
 Now that the Service Mesh Operator has been installed, you can now install a Service Mesh control plane.

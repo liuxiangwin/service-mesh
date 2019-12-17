@@ -1,4 +1,4 @@
-# Istio Gateway and Routing by HTTP header Lab
+# Istio Gateway and Routing by HTTP header
 
 Configure service mesh gateway to control traffic that entering mesh.
 
@@ -81,7 +81,7 @@ Login to the Kiali web console. Select "Services" on the left menu. Then select 
 
 * Add Gateway by enable Advanced Option then select Add Gateway  -->
 
-## Test
+### Test
 Get URL of Istio Gateway and set to environment variable by using following command
 ```
 export GATEWAY_URL=$(oc -n $USERID-istio-system get route istio-ingressgateway -o jsonpath='{.spec.host}')
@@ -109,6 +109,7 @@ Sample outout
 ```
 Frontend version: v2 => [Backend: http://backend:8080, Response: 200, Body: Backend version:v2,Response:200,Host:backend-v2-7655885b8c-b7nf2, Message: Hello World!!]
 ```
+
 ## Remove Istio Policy
 Run oc delete command to remove Istio policy.
 
