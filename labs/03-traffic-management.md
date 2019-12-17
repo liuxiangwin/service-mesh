@@ -253,6 +253,9 @@ Open anoter terminal to view backend-v3 log
 oc tail -f <backend-v3 pod> -c -n $USERID
 ```
 
+Using Kiali Web Console to view pod's log by select Workloads on left menu then select log
+![](../images/kiali-view-pod-log.png)
+
 Run cURL to test that every request is sent to backend-v3 by checking log of backend-v3
 
 Sample output
