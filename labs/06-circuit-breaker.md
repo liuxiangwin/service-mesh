@@ -23,9 +23,11 @@ backend-v1-6ddf9c7dcf-x6gkh   2/2     Running   0          8h
 frontend-v1-655f4478c-wn7wr   2/2     Running   0          9h
 ```
 You can also scaleup pod by using OpenShift Web Console. Select Workloads->Deployment on the left-menu. Then select backend-v1
+
 ![Deploymennt](../images/openshift-console-deployment.png)
 
 Scale pod to 3 by click upper arrow icon.
+
 ![Scaleup](../images/openshift-console-scaleup.png)
 
 We will force one backend-v1 pod to return 504. This can be done by rsh into pod the curl to /stop (backend-v1 will always return 504 after receiving /stop. This is for demo)
