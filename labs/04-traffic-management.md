@@ -105,7 +105,9 @@ Example of Destination Rule configuration
 Remark: You can view YAML by click "YAML" tab
 
 ### Verify Istio Config
-Login to the Kiali web console. Select "Istio Config" on the left menu. Verify that Destination Rule and Virtual Service are created and get green mark.
+Login to the Kiali web console. Select "Istio Config" on the left menu. Verify that Destination Rule and Virtual Service are created and get green check mark.
+
+![Kiali Verify Config](../images/kiali-verify-config.png)
 
 
 ### Test
@@ -287,13 +289,19 @@ Check Graph in Kiali Console with Response time.
 
 
 
-## Remove Istio Policy
+## Clean Up
 Run oc delete command to remove Istio policy.
 
 ```
 oc delete -f istio-files/virtual-service-backend-v1-v2-80-20.yml -n $USERID
 oc delete -f istio-files/destination-rule-backend-v1-v2.yml -n $USERID
+oc delete -f istio-files/virtual-service-backend-v1-v2-mirror-to-v3.yml -n USERID
+```
 
+And delete all backend-v3 related
+```
+oc delete -f ocp/backend-v3-deployment.yml -n $USERID
+oc delete -f ocp/backend-v3-service.yml -n $USERID
 ```
 
 You can also remove Istio policy by using Kiali Console by select Istio Config menu on the left then select each configuration and select menu Action on the upper right of page. Then click Delete

@@ -109,3 +109,20 @@ Version v2: 0
 ```
 You can also check Kiali console graph
 ![](../images/kiali-graph-circuit-breaker.png)
+
+## Clean Up
+Run oc delete command to remove Istio policy.
+
+```
+oc delete -f istio-files/destination-rule-backend-circuit-breaker-with-pool-ejection.yml -n $USERID
+oc delete -f istio-files/virtual-service-backend.yml -n $USERID
+```
+
+Remove all pods
+```
+oc delete -f ocp/backend-v1-deployment.yml -n $USERID
+oc delete -f ocp/backend-service.yml -n $USERID
+oc delete -f ocp/frontend-v1-deployment.yml -n $USERID
+oc delete -f ocp/frontend-service.yml -n $USERID
+oc delete -f ocp/frontend-route.yml -n $USERID
+```

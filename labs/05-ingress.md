@@ -111,7 +111,7 @@ Sample outout
 Frontend version: v2 => [Backend: http://backend:8080, Response: 200, Body: Backend version:v2,Response:200,Host:backend-v2-7655885b8c-b7nf2, Message: Hello World!!]
 ```
 
-## Remove Istio Policy
+## Clean Up
 Run oc delete command to remove Istio policy.
 
 ```
