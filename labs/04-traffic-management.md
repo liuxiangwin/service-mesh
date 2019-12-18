@@ -89,17 +89,21 @@ On the main screen of backend service. Click Action menu on the top right and se
 ![Create Weighted Routing](../images/service-backend-create-weighted-routing.png)
 
 Use slider bar or input weight 
+
 ![Set Weight](../images/service-backend-set-weight-by-kiali.png)
 
 Click "Show Advanced Options" to explore more options
+
 ![Show Advanced Options](../images/service-backend-set-weight-advanced-by-kiali.png)
 
 Click Create to create Destination Rule and Virtual Service. Then view result by select Virtual Service and Destination Rule on the bottom section of page.
 
 Example of Virtual Service configuration
+
 ![Kiali Istio Config Virtual Service](../images/kiali-service-backend-virtual-service.png)
 
 Example of Destination Rule configuration
+
 ![Kiali Istio Config Destination Rule](../images/kiali-service-backend-destination-rule.png)
 
 Remark: You can view YAML by click "YAML" tab
@@ -144,6 +148,7 @@ Select Versioned app graph, Request percentage and enable animation.
 
 ## Mirroring
 Mirror all request to backend to backend-v3
+
 ![Mirror](../images/microservices-mirror.png)
 
 Run following command to create backend-v3
@@ -190,7 +195,8 @@ oc tail -f <backend-v3 pod> -c -n $USERID
 ```
 
 Using Kiali Web Console to view pod's log by select Workloads on left menu then select log
-![](../images/kiali-view-pod-log.png)
+
+![view pod's log](../images/kiali-view-pod-log.png)
 
 Run cURL to test that every request is sent to backend-v3 by checking log of backend-v3
 ```
@@ -213,7 +219,8 @@ We can also add timeout to Virtual Service configuration. Currently backend v2 i
 
 ![Timeout 3s](../images/microservices-timeout-3s.png)
 
-Review the following Istio's  virtual service configuration file [virtual-service-backend-v1-v2-50-50-3s-timeout.yml](../istio-files/virtual-service-backend-v1-v2-50-50-3s-timeout.yml) to set timeout to 3 sec
+Review the following Istio's  virtual service configuration file 
+[virtual-service-backend-v1-v2-50-50-3s-timeout.yml](../istio-files/virtual-service-backend-v1-v2-50-50-3s-timeout.yml) to set timeout to 3 sec
 
 ```
 apiVersion: networking.istio.io/v1alpha3
