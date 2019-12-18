@@ -3,7 +3,8 @@
 
 
 ## Setup
-Setup microservices app as follow 
+Setup microservices app as follow:
+
 ![](../images/microservices-circuit-breaker.png)
 
 Remove backend-v2 and scale backend-v1 to 3 pods
