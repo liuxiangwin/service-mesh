@@ -81,7 +81,7 @@ destinationrule.networking.istio.io/backend created
 virtualservice.networking.istio.io/backend-virtual-service created
 
 ```
-### Routing Policy with Kiali Console 
+### Create Routing Policy by Kiali Console 
 Login to the Kiali web console. Select "Services" on the left menu. Then select backend service
 
 On the main screen of backend service. Click Action menu on the top right and select "Create Weighted Routing"
@@ -103,6 +103,9 @@ Example of Destination Rule configuration
 ![Kiali Istio Config Destination Rule](../images/kiali-service-backend-destination-rule.png)
 
 Remark: You can view YAML by click "YAML" tab
+
+### Verify Istio Config
+Login to the Kiali web console. Select "Istio Config" on the left menu. Verify that Destination Rule and Virtual Service are created and get green mark.
 
 
 ### Test
@@ -132,6 +135,9 @@ Version v2: 11
 ========================================================
 ```
 You can also check this splitting traffic with Kiali console by select Graph on left menu.
+
+Select Versioned app graph, Request percentage and enable animation.
+
 ![Kiali Graph 80-20](../images/kiali-graph-80-20.png)
 
 ## Mirroring

@@ -9,8 +9,17 @@ Configure Control Plane including
 * Configure Control Plane
 * Configure project(s) or namespace(s) to be part of Service Mesh
 
+Following command line tools are needed for lab
+
+* oc command
+* cURL
+* git (optional)
+  
+You can download both for OSX and Windows here => [Link](https://1drv.ms/u/s!ArOxOqm_sB7DiSYninA0Aqd6a-kU?e=zsJMGn)
+
 ## Setup
 
+### Environment Variables/Login to OpenShift
 Setup environment variables
 ```
 export USERID=<your user ID> 
@@ -30,41 +39,46 @@ For Windows
 ```
 oc login --username=%USERID% --server=<URL to OpenShift API> 
 ```
-Create project (namespace) for frontend and backend application
+
+Use your browser login to OpenShift Web Admin Console
+
+### Projects
+Create projects (namespace) for Service Mesh's control plane and your applications (for testing)
 ```
-oc new-project $USERID # or using %USERID% instead of $USERID for Windows CMD
+oc new-project $USERID-istio-system --display-name="User1 Istio System"
+oc new-project $USERID 
 
 ```
 
-Create Project (namespace) by Web Console, select new project from top-left menu
-[](../images/create-user-project.png)
+You can also use OpenShift Web Admin Console to create Project by select new project from top-left menu then create your project
+**Remark: replace user1 with your user ID**
 
-Clone project to your working directory
+Control Plane
+![Create Project](../images/create-istio-system-project.png)
+
+Application
+![Create ](../images/create-user-project.png)
+
+### Labs Content
+Clone labs content to your working directory. Open your terminal (For OSX terminal, iTerm2, etc and CMD for Windows) then run following command
+
 ```
 git clone https://gitlab.com/workshop6/service-mesh.git
 
 ```
-If you don't have git, click this [Service Mesh Workshop](https://gitlab.com/workshop6/service-mesh)
+If you don't have git, click this Link =>[Service Mesh Workshop](https://gitlab.com/workshop6/service-mesh)
 
-Download by click following icon.
+Download labs content by click following icon.
 ![Dowload from Git](../images/download-from-git.png)
 
 
-## Service Mesh Control Plane
+## Create Service Mesh Control Plane
 Now that the Service Mesh Operator has been installed, you can now install a Service Mesh control plane.
 The previously installed Service Mesh operator watches for a ServiceMeshControlPlane resource in all namespaces. Based on the configurations defined in that ServiceMeshControlPlane, the operator creates the Service Mesh control plane.
 
 In this section of the lab, you define a ServiceMeshControlPlane and apply it to your **$USERID-istio-system namespace**.
 
-* Create a project (namespace) called **$USERID-istio-system** where the Service Mesh control plane will be installed by using oc command or Web Console
-  
-  ```
-  # Replace USER1 with your user ID
-  oc new-project $USERID-istio-system --display-name="User1 Istio System"
-  ```
 
-  By Web Console. **Replace user1 with your User ID.
-  ![Create Project](../images/create-istio-system-project.png)
   
 * Install Control Plane using the custom resource file [basic install](../install/basic-install.yml)
     Mutual TLS is disbled by setting mtls to false.
