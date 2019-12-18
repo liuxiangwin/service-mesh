@@ -111,6 +111,27 @@ Sample outout
 Frontend version: v2 => [Backend: http://backend:8080, Response: 200, Body: Backend version:v2,Response:200,Host:backend-v2-7655885b8c-b7nf2, Message: Hello World!!]
 ```
 
+You can also run script [run-50-with-ingress.sh](../scripts/run-50-ingress.sh) to generate round-robin request between frontend-v1 and frontend-v2
+
+```
+scripts/run-50-wiuth-ingress.sh
+```
+
+Sample output
+
+```
+...
+Frontend version: v2
+Frontend version: v1
+Frontend version: v2
+Frontend version: v1
+Frontend version: v2
+...
+```
+Kiali Graph show requests are from ingress gateway.
+
+![](../images/kiali-graph-ingress.png)
+
 ## Clean Up
 Run oc delete command to remove Istio policy.
 
