@@ -11,11 +11,15 @@ Configure Control Plane including
 
 Following command line tools are needed for lab
 
-* oc command
-* cURL
+* OpenShift Command Line Interface (CLI - oc command) 
+* cURLs
 * git (optional)
   
-You can download both for OSX and Windows here => [Link](https://1drv.ms/u/s!ArOxOqm_sB7DiSYninA0Aqd6a-kU?e=zsJMGn)
+OpenShift Web Console provided link in the top right of page to download oc command here.
+
+![Download oc tool](../images/openshift-console-download-oc.png)
+
+You can  also  download oc tool and cURL for OSX and Windows here => [Link](https://1drv.ms/u/s!ArOxOqm_sB7DiSYninA0Aqd6a-kU?e=zsJMGn)
 
 ## Setup
 
