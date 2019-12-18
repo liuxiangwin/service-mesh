@@ -1,0 +1,33 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: backend
+spec:
+  host: backend
+  trafficPolicy:
+      connectionPool:
+        http: {}
+        tcp: {}
+      loadBalancer:
+        simple: ROUND_ROBIN
+      outlierDetection:
+        baseEjectionTime: 15m
+        consecutiveErrors: 1
+        interval: 15m
+        maxEjectionPercent: 100
+  # subsets:
+  # - name: v1
+  #   labels:
+  #     app: backend
+  #     version: v1
+  #   trafficPolicy:
+  #     connectionPool:
+  #       http: {}
+  #       tcp: {}
+  #     loadBalancer:
+  #       simple: ROUND_ROBIN
+  #     outlierDetection:
+  #       baseEjectionTime: 15m
+  #       consecutiveErrors: 1
+  #       interval: 15m
+  #       maxEjectionPercent: 100

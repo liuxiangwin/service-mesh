@@ -18,4 +18,4 @@ spec:
       version: v2
     trafficPolicy:
       loadBalancer:
-        simple: ROUND_ROBIN
+        simple: ROUND_ROBIN 

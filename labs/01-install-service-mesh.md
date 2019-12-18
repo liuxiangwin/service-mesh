@@ -13,17 +13,23 @@ Configure Control Plane including
 
 Setup environment variables
 ```
-export USERID=<your user ID> # or Use set USERID=<your user ID> for Windows CMD
+export USERID=<your user ID> 
 
-
+```
+For Windows
+```
+set USERID=<your user ID>
 ```
 
 Login to OpenShift with oc command by
 ```
-oc login --username=$USERID --server=<URL to OpenShift> # or using %USERID% instead of $USERID for Windows CMD
+oc login --username=$USERID --server=<URL to OpenShift API>
 
 ```
-
+For Windows
+```
+oc login --username=%USERID% --server=<URL to OpenShift API> 
+```
 Create project (namespace) for frontend and backend application
 ```
 oc new-project $USERID # or using %USERID% instead of $USERID for Windows CMD
@@ -63,10 +69,10 @@ In this section of the lab, you define a ServiceMeshControlPlane and apply it to
 * Install Control Plane using the custom resource file [basic install](../install/basic-install.yml)
     Mutual TLS is disbled by setting mtls to false.
     Kiali user is single sign-on with OpenShift
-* Create the service mesh control plane in the istio-system project
+* Create the service mesh control plane in the istio-system project from [basic-install.yml](../install/basic-install.yml)
   By oc command
   ```
-  oc apply -f install/istio-installation.yml -n $USERID-istio-system
+  oc apply -f install/basic-install.yml -n $USERID-istio-system
   ```
   By Web Console, navigate to: Operators -> Installed Operators then select Red Hat OpenShift Service Mesh
   ![](../images/select-openshift-service-mesh.png)
