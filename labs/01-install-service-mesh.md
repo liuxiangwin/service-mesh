@@ -58,9 +58,11 @@ You can also use OpenShift Web Admin Console to create Project by select new pro
 **Remark: replace user1 with your user ID**
 
 Control Plane
+
 ![Create Project](../images/create-istio-system-project.png)
 
 Application
+
 ![Create ](../images/create-user-project.png)
 
 ### Labs Content
@@ -93,12 +95,15 @@ In this section of the lab, you define a ServiceMeshControlPlane and apply it to
   oc apply -f install/basic-install.yml -n $USERID-istio-system
   ```
   By Web Console, navigate to: Operators -> Installed Operators then select Red Hat OpenShift Service Mesh
+
   ![](../images/select-openshift-service-mesh.png)
 
   Select Create Instance under Istio Service Mesh Control Plane
+
   ![](../images/create-control-plane.png)
 
   Copy and paste custom resource file [basic install](../install/basic-install.yml) to YAML section then click Create
+
   ![](../images/create-control-plane-yaml.png)
 
 
@@ -115,6 +120,8 @@ In this section of the lab, you define a ServiceMeshControlPlane and apply it to
   Watch pods by Web Console, naviage to: Workloads -> Pods
 
   ![watch istio pods web console](../images/watch-pods-istio-system.png)
+
+  **Remark: Total number of pods is 12**
 
 ## Service Mesh Member Roll
 The Service Mesh operator has installed a control plane configured for multitenancy. This installation reduces the scope of the control plane to only those projects/namespaces listed in a ServiceMeshMemberRoll.

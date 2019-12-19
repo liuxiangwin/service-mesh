@@ -16,22 +16,25 @@ watch oc get pods -n $USERID # or using oc get pods -w -n $USERID
 Review the following Istio's Gateway rule configuration file [ingress-gateway.yml](../istio-files/ingress-gateway.yml)  to create Istio Gateway.
 
 Run oc apply command to create Istio Gateway.
+
 ```
 oc apply -f istio-files/frontend-gateway.yml -n $USERID
 ```
 
 Sample outout
+
 ```
 gateway.networking.istio.io/frontend-gateway created
 ```
 
-**Remark: You can also using [Kiali Console to create Gateway](#create-gateway-using-kiali-console)**
+<!-- **Remark: You can also using [Kiali Console to create Gateway](#create-gateway-using-kiali-console)** -->
 
 
 
 ## Routing by incoming HTTP header
 ### Destination Rule
 Review the following Istio's destination rule configuration file [destination-rule-frontend-v1-v2.yml](../istio-files/destination-rule-frontend-v1-v2.yml)  to define subset called v1 and v2 by matching label "app" and "version"
+
 
 Run oc apply command to create Istio Gateway.
 ```
@@ -128,7 +131,7 @@ Frontend version: v1
 Frontend version: v2
 ...
 ```
-Kiali Graph show requests are from ingress gateway.
+Kiali Graph show that requests are from ingress gateway. (Comparing with "Unknown" from previous lab)
 
 ![](../images/kiali-graph-ingress.png)
 
@@ -137,7 +140,7 @@ Run oc delete command to remove Istio policy.
 
 ```
 oc delete -f istio-files/frontend-gateway.yml -n $USERID
-oc delete -f istio-files/destination-rule-frontend-v1-v2.yml -n $USERID
 oc delete -f istio-files/virtual-service-frontend-header-foo-bar-to-v1.yml -n $USERID
+oc delete -f istio-files/destination-rule-frontend-v1-v2.yml -n $USERID
 
 ```
