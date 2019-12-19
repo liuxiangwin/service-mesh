@@ -2,23 +2,29 @@
 
 Configure service mesh route rules to dynamically route and shape traffic between services -->
 ## Traffic Management
+In this lab you dynamically alter routing between different versions of the backend service.
 Routing within Service Mesh can be controlled by using Virtual Service and Routing Rules.
 
-Service Mesh Route rules control how requests are routed within service mesh.
+<!-- Service Mesh Route rules control how requests are routed within service mesh.
 
 Requests can be routed based on the source and destination, HTTP header fields, and weights associated with individual service versions. For example, a route rule could route requests to different versions of a service.
 
 VirtualService defines a set of traffic routing rules to apply when a host is addressed. Each routing rule defines matching criteria for traffic of a specific protocol. If the traffic is matched, then it is sent to a named destination service (or subset/version of it) defined in the registry. The source of traffic can also be matched in a routing rule. This allows routing to be customized for specific client contexts.
 
-DestinationRule defines policies that apply to traffic intended for a service after routing has occurred. These rules specify configuration for load balancing, connection pool size from the sidecar, and outlier detection settings to detect and evict unhealthy hosts from the load-balancing pool.
+DestinationRule defines policies that apply to traffic intended for a service after routing has occurred. These rules specify configuration for load balancing, connection pool size from the sidecar, and outlier detection settings to detect and evict unhealthy hosts from the load-balancing pool. -->
 
 ## Traffic splitting by Percentage
+
+You do so via routing mechanisms available from OpenShift. You then make use of routing mechanisms available from Red Hat Service Mesh.
+
+We can experiment with Istio routing rules by using our microservices application which contains 2 version of backend
+
 ![Backend v1 v2 80% 20%](../images/microservices-with-v1-v2-80-20.png)
 
 ### Destination Rule
-Review the following Istio's destination rule configuration file [destination-rule-backend-v1-v2.yml](../istio-files/destination-rule-backend-v1-v2.yml)  to define subset called v1 and v2 by matching label "app" and "version"
+Review the following Istio's destination rule configuration file [destination-rule-backend-v1-v2.yml](../istio-files/destination-rule-backend-v1-v2.yml)  to define subset called v1 and v2 by matching label "app" and "version" and using Round Robin for load balancing policy.
 
-**Remark: If you don't like to edit YAML file, You can try using [Kiali Console to create Istio policy](#routing-policy-with-kiali-console)**
+**Remark: If you don't comfortable with YAML and CLI, You can try using [Kiali Console to create Istio policy](#routing-policy-with-kiali-console)**
 
 ```
 apiVersion: networking.istio.io/v1alpha3
@@ -43,6 +49,7 @@ spec:
       loadBalancer:
         simple: ROUND_ROBIN
 ```
+
 ### Virtual Service
 Review the following Istio's  virtual service configuration file [virtual-service-backend-v1-v2-80-20.yml](../istio-files/virtual-service-backend-v1-v2-80-20.yml) to route 80% of traffic to version v1 and 20% of traffic to version v2
 
@@ -108,8 +115,8 @@ Example of Destination Rule configuration
 
 Remark: You can view YAML by click "YAML" tab
 
-### Verify Istio Config
-Login to the Kiali web console. Select "Istio Config" on the left menu. Verify that Destination Rule and Virtual Service are created and get green check mark.
+### Verify Istio Configuration
+Login to the Kiali web console. Select "Istio Config" on the left menu. Verify that Destination Rule and Virtual Service are created and get green check mark. (If there is error in configuration. Check YAML tab, Kiali will highlight that which line(s) is caused error)
 
 ![Kiali Verify Config](../images/kiali-verify-config.png)
 
@@ -125,6 +132,7 @@ Click YAML to view YAML file.
 
 ### Test
 Test A/B deployment by run [run-50.sh](../scripts/run-50.sh)
+
 ```
 scripts/run-50.sh
 
@@ -176,7 +184,7 @@ oc edit DestinationRule backend
 
 Refer to [Verify Istio Config](#verify-istio-config) section. You can also edit config from Kiali.
 
-## Mirroring
+## Dark Launch by Mirroring Traffic
 Mirror all request to backend to backend-v3
 
 ![Mirror](../images/microservices-mirror.png)
@@ -186,7 +194,7 @@ Run following command to create backend-v3
 oc apply -f ocp/backend-v3-deployment.yml -n $USERID
 oc apply -f ocp/backend-v3-service.yml -n $USERID
 ```
-**Remark: backend v3 create with app label backend-v3 and servive name backend-v3 then backend v3 is not included in backend service**
+**Remark: backend v3 create with app label backend-v3 and servive name backend-v3 then backend v3 is not included in backend service. You verify [backend-service.yml](../ocp/backend-service.yml) for this configuration**
 
 Review the following Istio's  virtual service configuration file [virtual-service-backend-v1-v2-mirror-to-v3.yml](../istio-files/virtual-service-backend-v1-v2-mirror-to-v3.yml) to mirror request to backend-v3
 
@@ -219,9 +227,10 @@ virtualservice.networking.istio.io/backend-virtual-service configured
 ```
 
 Open anoter terminal to view backend-v3 log
+
 ```
 # Use oc get pods to get pod name. Replace pod name in following commamnd
-oc tail -f <backend-v3 pod> -c -n $USERID
+oc tail -f <backend-v3 pod> -c backend -n $USERID
 ```
 
 Using Kiali Web Console to view pod's log by select Workloads on left menu then select log
@@ -229,11 +238,13 @@ Using Kiali Web Console to view pod's log by select Workloads on left menu then 
 ![view pod's log](../images/kiali-view-pod-log.png)
 
 Run cURL to test that every request is sent to backend-v3 by checking log of backend-v3
+
 ```
 curl $FRONTEND_URL
 ```
 
 Sample output
+
 ```
 ...
 {"level":30,"time":1576579437616,"pid":1,"hostname":"backend-v3-678fd7cd9f-vj8md","msg":"Check version","v":1}

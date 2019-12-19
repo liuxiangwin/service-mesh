@@ -10,6 +10,7 @@ Table of Content
  * [Traffic Management](labs/04-traffic-management.md)
  * [Istio Gateway - Entering the Mesh](labs/05-ingress.md)
  * [Service Resilience with Circuit Breaker](labs/06-circuit-breaker.md)
+ * [Secure with Mutual TLS](labs/07-securing-with-mTLS.md)
 
 ## Authors
 

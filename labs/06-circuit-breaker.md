@@ -76,61 +76,29 @@ Review the following Istio's destination rule configuration file [destination-ru
 
 ```
 ...
-outlierDetection:
-        baseEjectionTime: 15m
-        consecutiveErrors: 1
-        interval: 15m
-        maxEjectionPercent: 100
-# In plain english as follow:
-# Detect error with following condition
-# If backend is response with 5xx for 1 times. (consecutiveErrors: 1)
-# that pod will eject from pool for 15 minutes. (baseEjectionTime: 15m)
-# and all pods can be ejected. (maxEjectionPercent: 100)
-# This will check again in 10 minutes. (interval: 10m)
+trafficPolicy:
+    loadBalancer:
+      simple: ROUND_ROBIN
+    tls:
+      mode: ISTIO_MUTUAL
+...
 ```
 
-Apply destination rule and virtual service to backend service
+Apply destination rule to enable mTLS for backend service
 
 ```
-oc apply -f istio-files/destination-rule-backend-circuit-breaker-with-pool-ejection.yml -n $USERID
-oc apply -f istio-files/virtual-service-backend.yml -n $USERID
+
+oc apply -f istio-files/destination-rule-backend-v1-v2-mtls.yml -n $USERID
 ```
 
 Sample output
 
 ```
-destinationrule.networking.istio.io/backend created
-virtualservice.networking.istio.io/backend-virtual-service created
+destinationrule.networking.istio.io/backend configured
 ```
 
 ## Test
-Run [run-50.sh](../scripts/run-50.sh) again and check for output.
-After first response with 504. Circuit will break and that pod will be ejected from pool.
-Sample output
-```
-Backend:v1, Response Code: 200, Host:backend-v1-6ddf9c7dcf-x6gkh, Elapsed Time:1.215202 sec
-Backend:v1, Response Code: 504, Host:, Elapsed Time:0.132040 sec
-Backend:v1, Response Code: 200, Host:backend-v1-6ddf9c7dcf-x6gkh, Elapsed Time:1.258287 sec
-Backend:v1, Response Code: 200, Host:backend-v1-6ddf9c7dcf-sqxqz, Elapsed Time:0.964190 sec
-Backend:v1, Response Code: 200, Host:backend-v1-6ddf9c7dcf-x6gkh, Elapsed Time:1.000230 sec
-Backend:v1, Response Code: 200, Host:backend-v1-6ddf9c7dcf-sqxqz, Elapsed Time:0.987716 sec
-Backend:v1, Response Code: 200, Host:backend-v1-6ddf9c7dcf-x6gkh, Elapsed Time:1.110361 sec
-Backend:v1, Response Code: 200, Host:backend-v1-6ddf9c7dcf-sqxqz, Elapsed Time:1.115050 sec
-...
-...
-Backend:v1, Response Code: 200, Host:backend-v1-6ddf9c7dcf-sqxqz, Elapsed Time:1.114086 sec
-Backend:v1, Response Code: 200, Host:backend-v1-6ddf9c7dcf-x6gkh, Elapsed Time:1.002835 sec
-Backend:v1, Response Code: 200, Host:backend-v1-6ddf9c7dcf-sqxqz, Elapsed Time:1.059931 sec
-========================================================
-Total Request: 50
-Version v1: 49
-Version v2: 0
-========================================================
-...
-```
-T
-You can also check Kiali console graph
-![](../images/kiali-graph-circuit-breaker.png)
+
 
 ## Clean Up
 Run oc delete command to remove Istio policy.
@@ -140,11 +108,11 @@ oc delete -f istio-files/destination-rule-backend-circuit-breaker-with-pool-ejec
 oc delete -f istio-files/virtual-service-backend.yml -n $USERID
 ```
 
-Remove all pods
+<!-- Remove all pods
 ```
 oc delete -f ocp/backend-v1-deployment.yml -n $USERID
 oc delete -f ocp/backend-service.yml -n $USERID
 oc delete -f ocp/frontend-v1-deployment.yml -n $USERID
 oc delete -f ocp/frontend-service.yml -n $USERID
 oc delete -f ocp/frontend-route.yml -n $USERID
-```
+``` -->

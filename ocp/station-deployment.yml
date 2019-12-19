@@ -1,0 +1,29 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: station
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: station
+      annotations:
+        sidecar.istio.io/inject: "false"
+    spec:
+      containers:
+      - name: station
+        image: quay.io/voravitl/backend-js:v1
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: "0.1"
+            memory: 60Mi
+          limits:
+            cpu: "0.2"
+            memory: 100Mi
+        env:
+          - name: BACKEND_URL
+            value: https://httpbin.org/status/201
+        ports:
+        - containerPort: 8080
