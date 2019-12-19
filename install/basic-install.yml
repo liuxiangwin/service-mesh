@@ -63,7 +63,7 @@ spec:
 
     kiali:
       enabled: true
-
+      view_only_mode: false
     tracing:
       # change to false to disable tracing (i.e. jaeger)
       enabled: true

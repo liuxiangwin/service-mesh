@@ -2,22 +2,22 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: backend-v1
-  labels:
-    app: backend
-    version: 1.0.0
+  # labels:
+  #   app: backend
+  #   version: v1
 spec:
   replicas: 1
   template:
     metadata:
       labels:
         app: backend
-        version: 1.0.0
+        version: v1
       annotations:
         sidecar.istio.io/inject: "true"
     spec:
       containers:
       - name: backend
-        image: quay.io/voravitl/backend-js:1.0.0
+        image: quay.io/voravitl/backend-js:v1
         imagePullPolicy: Always
         resources:
           requests:
