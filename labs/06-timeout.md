@@ -65,7 +65,7 @@ Result
 Frontend version: v1 => [Backend: http://backend:8080, Response: 504, Body: upstream request timeout]
 ```
 
-Run [run-50.shj](../scripts/run-50.sh)
+Run [run-50.sh](../scripts/run-50.sh)
 
 ```
 scripts/run-50.sh
