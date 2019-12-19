@@ -113,6 +113,15 @@ Login to the Kiali web console. Select "Istio Config" on the left menu. Verify t
 
 ![Kiali Verify Config](../images/kiali-verify-config.png)
 
+Check destination rule detail by select backend destination rule
+
+![Kiali Destination Rule](../images/kiali-destination-rule.png)
+
+Click YAML to view YAML file. 
+**Remark: You can also edit Istio configuration directly from YAML here**
+
+![Kiali View YAML](../images/kiali-view-yaml.png)
+
 
 ### Test
 Test A/B deployment by run [run-50.sh](../scripts/run-50.sh)
@@ -145,6 +154,27 @@ You can also check this splitting traffic with Kiali console by select Graph on 
 Select Versioned app graph, Request percentage and enable animation.
 
 ![Kiali Graph 80-20](../images/kiali-graph-80-20.png)
+
+### Bonus: Play with Weight
+Istio configuration is just normal Kubernetes Custom Resource Definition (CRD) then you can use oc command to play with it
+
+Example
+```
+# Run
+oc get DestinationRule -n $USERID
+# Output
+NAME       HOST       AGE
+backend   backend   11h
+```
+
+Try to run "oc edit" to edit weight
+```
+oc edit DestinationRule backend
+# Edit 80% and 20% and then save, run scripts/run-50.sh again then
+# check Kiali Graph
+```
+
+Refer to [Verify Istio Config](#verify-istio-config) section. You can also edit config from Kiali.
 
 ## Mirroring
 Mirror all request to backend to backend-v3
