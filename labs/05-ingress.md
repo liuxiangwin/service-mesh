@@ -135,12 +135,13 @@ Kiali Graph show that requests are from ingress gateway. (Comparing with "Unknow
 
 ![](../images/kiali-graph-ingress.png)
 
-## Clean Up
+## Cleanup
 Run oc delete command to remove Istio policy.
 
 ```
 oc delete -f istio-files/frontend-gateway.yml -n $USERID
 oc delete -f istio-files/virtual-service-frontend-header-foo-bar-to-v1.yml -n $USERID
 oc delete -f istio-files/destination-rule-frontend-v1-v2.yml -n $USERID
+oc delete -f ocp/frontend-v2-deployment.yml -n $USERID
 
 ```
