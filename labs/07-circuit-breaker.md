@@ -77,18 +77,29 @@ Review the following Istio's destination rule configuration file [destination-ru
 ```
 ...
 trafficPolicy:
-    loadBalancer:
-      simple: ROUND_ROBIN
-    tls:
-      mode: ISTIO_MUTUAL
+      connectionPool:
+        http: {}
+        tcp: {}
+      loadBalancer:
+        simple: ROUND_ROBIN
+      outlierDetection:
+        baseEjectionTime: 15m
+        consecutiveErrors: 1
+        interval: 15m
+        maxEjectionPercent: 100
+# Detect error with condition:
+# If found 1 consecutive error (consecutiveErrors)
+# then eject that pod from pool for 15 minutes (baseEjectionTime)
+# All of pods can be ejected (maxEjectionPercent)
+# check again within 15 minutes (interval)
 ...
 ```
 
-Apply destination rule to enable mTLS for backend service
+Apply destination rule to enable circuit breaker with pool ejection for backend service
 
 ```
 
-oc apply -f istio-files/destination-rule-backend-v1-v2-mtls.yml -n $USERID
+oc apply -f istio-files/destination-rule-backend-circuit-breaker-with-pool-ejection.yml -n $USERID
 ```
 
 Sample output
