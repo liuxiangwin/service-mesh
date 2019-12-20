@@ -1,7 +1,7 @@
 apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
 metadata:
-  name: frontend
+  name: frontend-destination-rule
 spec:
   host: frontend
   subsets:
