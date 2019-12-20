@@ -11,11 +11,11 @@ spec:
     - destination:
         host: backend
         subset: v1
-      weight: 50
+      weight: 50  
     - destination:
         host: backend
         subset: v2
       weight: 50
     # retries:
     #   attempts: 2
-    #   perTryTimeout: 2s
+    #   perTryTimeout: 3s
