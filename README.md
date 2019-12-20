@@ -15,7 +15,7 @@ Table of Content
 
 # OpenShift Service Mesh
 
-[Introduction to OpenShift Sevice Mesh](../docs/OCP-service-mesh-workshop.pdf)
+[Introduction to OpenShift Sevice Mesh](https://1drv.ms/b/s!ArOxOqm_sB7DiScJGqW4ix-H7qVX?e=QgIpGg)
 ## Authors
 
 * **Voravit L** 
