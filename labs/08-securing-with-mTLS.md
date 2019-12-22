@@ -18,6 +18,15 @@ Create another pod without sidecar for testing
 oc create -f ocp/station-deployment.yml -n $USERID
 ```
 
+Verify that deployment of station
+
+```
+...
+annotations:
+        sidecar.istio.io/inject: "false"
+...
+```
+
 Check that station pod has no sidecar
 
 ```
@@ -50,7 +59,7 @@ Backend version:v1,Response:200,Host:backend-v1-6ddf9c7dcf-vlcr9, Message: Hello
 ```
 
 ## Enable Mutual TLS for Backend Service
-Review the following Istio's authenticaiton rule configuration file [destination-rule-backend-v1-v2-mtls.yml](../istio-files/destination-rule-backend-v1-v2-mtls.yml)  to enable authenticaion with following configuration.
+Review the following Istio's authenticaiton rule configuration file [authentication-backend-enable-mtls.yml](../istio-files/authentication-backend-enable-mtls.yml)  to enable authenticaion with following configuration.
 
 ```
 ...
@@ -59,6 +68,8 @@ spec:
   - name: backend
     ports:
     - number: 8080
+  peers:
+  - mtls: {}
 ...
 ```
 
@@ -71,6 +82,7 @@ Review the following Istio's destination rule configuration file [destination-ru
         simple: ROUND_ROBIN
       tls:
         mode: ISTIO_MUTUAL
+...
 ```
 
 Apply authentication, destination rule and virtual service to backend service
