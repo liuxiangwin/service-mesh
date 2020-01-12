@@ -12,6 +12,6 @@ spec:
         simple: ROUND_ROBIN
       outlierDetection:          #Detect error with condition
         consecutiveErrors: 1     #If found 1 consecutive error (consecutiveErrors)
-        baseEjectionTime: 15m     #then eject that pod from pool for 15 minutes (baseEjectionTime)
+        baseEjectionTime: 15m    #then eject that pod from pool for 15 minutes (baseEjectionTime)
         interval: 15m            #check again within 15 minutes (interval)
         maxEjectionPercent: 100  #All of pods can be ejected (maxEjectionPercent)
